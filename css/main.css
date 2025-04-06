@@ -164,7 +164,7 @@ input {
     background-color: white;
     display: flex;
     justify-content: space-between;
-    padding: 5px;
+    padding: 9px;
 }
 
 .task-title {

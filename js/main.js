@@ -3,7 +3,11 @@ let button = document.querySelector('button')
 let input = document.querySelector('input')
 let error = document.querySelector('.error')
 
-let point = 0
+
+if(localStorage.getItem('name')) {
+    taskList.innerHTML = localStorage.getItem('name')
+}
+let point = localStorage.getItem('point')
 
 
 button.onclick = function() {
@@ -35,4 +39,10 @@ button.onclick = function() {
     `
     taskList.insertAdjacentHTML('beforeend', newcom)
 
+    local()
+}
+
+function local() {
+    localStorage.setItem('name', taskList.innerHTML)
+    localStorage.setItem('point', point)
 }

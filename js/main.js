@@ -5,8 +5,8 @@ let error = document.querySelector('.error')
 
 let tasks = []
 
-if(localStorage.getItem('name')) {
-    tasks = JSON.parse(localStorage.getItem('name'))
+if(localStorage.getItem('key')) {
+    tasks = JSON.parse(localStorage.getItem('key'))
      
    
     tasks.forEach((item) => {
@@ -116,5 +116,5 @@ taskList.addEventListener('click', function(e) {
 })
    
 function local() {
-    localStorage.setItem('name', JSON.stringify(tasks))
+    localStorage.setItem('key', JSON.stringify(tasks))
 }

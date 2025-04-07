@@ -5,8 +5,33 @@ let error = document.querySelector('.error')
 
 let tasks = []
 
+if(localStorage.getItem('name')) {
+    tasks = JSON.parse(localStorage.getItem('name'))
+     
+   
+    tasks.forEach((item) => {
+        let cssClass = item.pos ? 'task-title task__done' : 'task-title';
+        let newcom = `
+        <li class = 'list-group-item' id='${item.id}'>
+            <div class = '${cssClass}'>${item.text}</div>
+            <div class = 'btn__group'>
+                <button class= 'btn__action' data-action='done'>
+                    <img src='img/tick.svg' class = 'btn__action btn__done'>
+                </button>
+                <button class= 'btn__action' data-action='close'>
+                    <img src='img/cross.svg' class = 'btn__action btn__close'>
+                </button>
+            </div>
+        </li>
+    `
+    
+    taskList.insertAdjacentHTML('beforeend', newcom)
+    if(taskList.children.length > 1) {
+        document.querySelector('.taskList__h3').classList.add('none')
+    }
+    });
+}
 
-let point = localStorage.getItem('point')
 
 
 button.onclick = function() {
@@ -17,10 +42,7 @@ button.onclick = function() {
     } else {
         error.textContent = ''
     }
-    point++
-    if(point == 1) {
-        document.querySelector('.taskList__h3').classList.add('none')
-    }
+
 
     // Создание объекта
     let task = {
@@ -41,7 +63,7 @@ button.onclick = function() {
 // Новая разметка 
     let newcom = `
         <li class = 'list-group-item' id='${task.id}'>
-            <div class = '${CssClass}'><span class='point'>${point})</span>${task.text}</div>
+            <div class = '${CssClass}'>${task.text}</div>
             <div class = 'btn__group'>
                 <button class= 'btn__action' data-action='done'>
                     <img src='img/tick.svg' class = 'btn__action btn__done'>
@@ -55,21 +77,26 @@ button.onclick = function() {
     taskList.insertAdjacentHTML('beforeend', newcom)
     
     input.value = ''
+    if(taskList.children.length > 1) {
+        document.querySelector('.taskList__h3').classList.add('none')
+    }
 
-    // local()
+    local()
 }
 
-// function local() {
-//     localStorage.setItem('point', point)
-// }
+
 
 taskList.addEventListener('click', function(e) {
     if(e.target.dataset.action == 'done') {
         let done = e.target.closest('.list-group-item')
         done.classList.toggle('task__done')
-    }
-
-
+        let id = done.id
+        let dod = tasks.find((task) => {
+            return id == task.id
+        })
+        dod.pos = !dod.pos
+    } 
+    local()
 })
 
 taskList.addEventListener('click', function(e) {
@@ -80,10 +107,14 @@ taskList.addEventListener('click', function(e) {
                 return item.id != id
             })
             close.remove()
-            point--
         }
+    if(taskList.children.length == 1) {
+        document.querySelector('.taskList__h3').classList.remove('none')
+    }
 
-       
+    local()
 })
    
-  
+function local() {
+    localStorage.setItem('name', JSON.stringify(tasks))
+}
